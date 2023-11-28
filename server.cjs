@@ -29,7 +29,23 @@ app.get("/api/v1/pets/:name", (req, res) => {
   }
 });
 //app.get() for pets by owners names
-app.get("/api/v1/pets/owner");
+app.get("/api/v1/pets/owner/:owner", (req, res) => {
+  const { owner } = req.params;
+
+  // Find the pet with the specified name in the pets array
+  const foundOwner = pets.find(
+    (pet) => pet.owner.toLowerCase() === owner.toLowerCase()
+  );
+
+  if (foundOwner) {
+    // If a matching owner is found, send back the pet object
+    res.json(foundOwner);
+  } else {
+    // If no matching owner is found, send an appropriate response
+    res.status(404).json({ error: "Owner not found" });
+  }
+});
+
 //create a port variable called PORT
 const PORT = 8080;
 app.listen(PORT, () => {
